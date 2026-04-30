@@ -1,0 +1,28 @@
+Jobify est prêt. Build passé sans erreur. Voici le résumé de ce qui a été construit :
+
+Ce qui a été créé
+Stack : Next.js 16 · PostgreSQL · Prisma 7 · shadcn/ui · Tailwind CSS v4
+
+Pages
+Route	Fonctionnalité
+/applications	Liste des candidatures avec filtre par statut
+/applications/new	Formulaire de création
+/applications/[id]	Détail : métadonnées, étapes de recrutement, documents
+/applications/[id]/edit	Édition
+/documents	Bibliothèque de CVs/lettres de motivation
+/documents/upload	Upload PDF (max 10 Mo)
+/companies	Gestion des entreprises
+/companies/[id]	Détail d'une entreprise + ses candidatures
+/stats	KPIs + graphiques (pie statuts, bar par mois)
+/api/files/[filename]	Serve les PDFs uploadés
+Lancer l'application
+
+cd jobify
+
+# Configurer la BDD dans .env (déjà configuré pour postgres local)
+# La migration a déjà été appliquée
+
+npm run dev
+Deux points à noter
+Entreprise d'abord — va sur /companies pour créer une entreprise avant ta première candidature
+PostgreSQL requis — la BDD jobify a été créée et migrée sur localhost:5432
