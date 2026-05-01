@@ -159,7 +159,8 @@ model Document {
   name         String
   type         DocumentType
   fileName     String
-  storagePath  String
+  publicId     String
+  source       String
   mimeType     String               @default("application/pdf")
   sizeBytes    Int
   userId       String
