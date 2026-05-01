@@ -2,6 +2,20 @@
 
 A job application tracker built with Next.js. Manage your applications, track recruitment stages, attach documents, and visualize your job search with statistics.
 
+🌐 **Live demo:** https://jobify-samhalera.vercel.app
+
+📦 **Source code:** [GitHub](https://github.com/SamHalera/jobify-app)
+
+## Context
+
+I built Jobify to organize my own job search. Spreadsheets and notes 
+quickly fell short — I wanted a single place to track applications by 
+status, log every step of a recruitment process, and keep CVs / cover 
+letters attached to each company. The stats page came later when I 
+realized I had no clear view of my pipeline at a glance.
+
+This is the project I'm currently using daily for my own job search.
+
 ## Features
 
 - **Application tracking** — Create and manage job applications with statuses (Wishlist → Applied → In Progress → Offer → Accepted/Rejected)
