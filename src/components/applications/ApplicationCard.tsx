@@ -9,7 +9,7 @@ export function ApplicationCard({ application }: { application: ApplicationWithC
   return (
     <div className="group relative flex flex-col rounded-xl border border-border bg-card p-5 card-shadow transition-all duration-200 hover:card-shadow-md hover:-translate-y-1 overflow-hidden">
       {/* Gradient accent bar */}
-      <div className="absolute inset-x-0 top-0 h-0.75 bg-linear-to-r from-[#2E9CCA] via-[#464866] to-[#25274D] opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute inset-x-0 top-0 h-0.75 bg-linear-to-r from-[#F72585] via-[#7209B7] to-[#3A0CA3] opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
       {/* Top row */}
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="min-w-0">

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { requireAuth } from "@/lib/require-auth";
 import type { ApplicationStatus, ApplicationWithRelations, ApplicationWithCount } from "@/types";
 
 const ApplicationSchema = z.object({
@@ -21,8 +22,9 @@ export async function getApplications(filters?: {
   status?: ApplicationStatus;
   companyId?: string;
 }): Promise<ApplicationWithCount[]> {
+  const user = await requireAuth();
   return prisma.application.findMany({
-    where: filters,
+    where: { userId: user.id, ...filters },
     include: {
       company: true,
       _count: { select: { stages: true, documents: true } },
@@ -32,8 +34,9 @@ export async function getApplications(filters?: {
 }
 
 export async function getApplicationById(id: string): Promise<ApplicationWithRelations | null> {
+  const user = await requireAuth();
   return prisma.application.findUnique({
-    where: { id },
+    where: { id, userId: user.id },
     include: {
       company: true,
       stages: { orderBy: { order: "asc" } },
@@ -43,6 +46,7 @@ export async function getApplicationById(id: string): Promise<ApplicationWithRel
 }
 
 export async function createApplication(formData: FormData) {
+  const user = await requireAuth();
   const raw = {
     jobTitle: formData.get("jobTitle") as string,
     companyId: formData.get("companyId") as string,
@@ -67,6 +71,7 @@ export async function createApplication(formData: FormData) {
       status: data.status,
       appliedAt: data.appliedAt ? new Date(data.appliedAt) : null,
       notes: data.notes || null,
+      userId: user.id,
     },
   });
 
@@ -75,6 +80,7 @@ export async function createApplication(formData: FormData) {
 }
 
 export async function updateApplication(id: string, formData: FormData) {
+  const user = await requireAuth();
   const raw = {
     jobTitle: formData.get("jobTitle") as string,
     companyId: formData.get("companyId") as string,
@@ -89,7 +95,7 @@ export async function updateApplication(id: string, formData: FormData) {
   const data = ApplicationSchema.parse(raw);
 
   const application = await prisma.application.update({
-    where: { id },
+    where: { id, userId: user.id },
     data: {
       jobTitle: data.jobTitle,
       companyId: data.companyId,
@@ -109,8 +115,9 @@ export async function updateApplication(id: string, formData: FormData) {
 }
 
 export async function updateApplicationStatus(id: string, status: ApplicationStatus) {
+  const user = await requireAuth();
   const application = await prisma.application.update({
-    where: { id },
+    where: { id, userId: user.id },
     data: { status },
   });
   revalidatePath("/applications");
@@ -119,19 +126,23 @@ export async function updateApplicationStatus(id: string, status: ApplicationSta
 }
 
 export async function deleteApplication(id: string) {
-  await prisma.application.delete({ where: { id } });
+  const user = await requireAuth();
+  await prisma.application.delete({ where: { id, userId: user.id } });
   revalidatePath("/applications");
 }
 
 export async function getApplicationStats() {
+  const user = await requireAuth();
   const [statusCounts, monthly] = await Promise.all([
     prisma.application.groupBy({
       by: ["status"],
+      where: { userId: user.id },
       _count: { status: true },
     }),
     prisma.$queryRaw<{ month: string; count: bigint }[]>`
       SELECT to_char(DATE_TRUNC('month', "createdAt"), 'YYYY-MM') as month, COUNT(*) as count
       FROM "Application"
+      WHERE "userId" = ${user.id}
       GROUP BY month
       ORDER BY month ASC
       LIMIT 12

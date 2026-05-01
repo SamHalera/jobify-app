@@ -34,7 +34,7 @@ export default async function ApplicationsPage({ searchParams }: Props) {
           </p>
         </div>
         <Link href="/applications/new">
-          <Button className="gap-2 shadow-sm shadow-[#2E9CCA]/30 bg-linear-to-r from-[#2E9CCA] to-[#464866] hover:from-[#25274D] hover:to-[#2E9CCA] border-0 text-white transition-all duration-300">
+          <Button className="gap-2 shadow-sm shadow-[#4361EE]/30 bg-linear-to-r from-[#4361EE] to-[#7209B7] hover:from-[#3A0CA3] hover:to-[#4361EE] border-0 text-white transition-all duration-300">
             <PlusIcon className="h-4 w-4" />
             Nouvelle candidature
           </Button>
@@ -47,7 +47,7 @@ export default async function ApplicationsPage({ searchParams }: Props) {
           <button className={cn(
             "rounded-full px-3.5 py-1.5 text-xs font-medium transition-all",
             !filterStatus
-              ? "bg-linear-to-r from-[#2E9CCA] to-[#464866] text-white shadow-sm shadow-[#2E9CCA]/30"
+              ? "bg-linear-to-r from-[#4361EE] to-[#7209B7] text-white shadow-sm shadow-[#4361EE]/30"
               : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
           )}>
             Toutes
@@ -58,7 +58,7 @@ export default async function ApplicationsPage({ searchParams }: Props) {
             <button className={cn(
               "inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium transition-all",
               filterStatus === s
-                ? "bg-linear-to-r from-[#2E9CCA] to-[#464866] text-white shadow-sm shadow-[#2E9CCA]/30"
+                ? "bg-linear-to-r from-[#4361EE] to-[#7209B7] text-white shadow-sm shadow-[#4361EE]/30"
                 : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
             )}>
               <span className={cn("h-1.5 w-1.5 rounded-full", STATUS_DOT[s])} />
