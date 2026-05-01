@@ -16,7 +16,7 @@ export default function LoginPage() {
     if (session?.user) router.replace("/applications");
   }, [session, router]);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
     setIsPending(true);
