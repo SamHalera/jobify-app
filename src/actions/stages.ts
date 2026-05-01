@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { requireAuth } from "@/lib/require-auth";
 import type { StageType, StageOutcome } from "@/types";
 
 const StageSchema = z.object({
@@ -14,7 +15,16 @@ const StageSchema = z.object({
   notes: z.string().optional(),
 });
 
+async function verifyApplicationOwnership(applicationId: string, userId: string) {
+  const app = await prisma.application.findUnique({ where: { id: applicationId, userId } });
+  if (!app) throw new Error("Candidature introuvable");
+  return app;
+}
+
 export async function addStage(applicationId: string, formData: FormData) {
+  const user = await requireAuth();
+  await verifyApplicationOwnership(applicationId, user.id);
+
   const raw = {
     type: formData.get("type") as StageType,
     title: formData.get("title") as string,
@@ -49,6 +59,9 @@ export async function addStage(applicationId: string, formData: FormData) {
 }
 
 export async function updateStage(id: string, applicationId: string, formData: FormData) {
+  const user = await requireAuth();
+  await verifyApplicationOwnership(applicationId, user.id);
+
   const raw = {
     type: formData.get("type") as StageType,
     title: formData.get("title") as string,
@@ -76,11 +89,15 @@ export async function updateStage(id: string, applicationId: string, formData: F
 }
 
 export async function deleteStage(id: string, applicationId: string) {
+  const user = await requireAuth();
+  await verifyApplicationOwnership(applicationId, user.id);
   await prisma.recruitmentStage.delete({ where: { id } });
   revalidatePath(`/applications/${applicationId}`);
 }
 
 export async function reorderStages(applicationId: string, orderedIds: string[]) {
+  const user = await requireAuth();
+  await verifyApplicationOwnership(applicationId, user.id);
   await prisma.$transaction(
     orderedIds.map((id, order) =>
       prisma.recruitmentStage.update({ where: { id }, data: { order } })
