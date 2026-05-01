@@ -95,7 +95,7 @@ export function DocumentPicker({ applicationId, attachedDocs, allDocs }: Props) 
             <div key={document.id} className="flex items-center justify-between p-3 border rounded-lg bg-card">
               <div className="flex items-center gap-3">
                 <a
-                  href={`/api/files/${encodeURIComponent(document.storagePath.split("/").pop() ?? "")}`}
+                  href={document.source}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm font-medium hover:underline"
