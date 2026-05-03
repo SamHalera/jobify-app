@@ -49,7 +49,7 @@ This is the project I'm currently using daily for my own job search.
 **1. Clone the repository**
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/SamHalera/jobify-app.git
 cd jobify
 ```
 
